@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Profile - k29photo{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-header">
+        <h2>Welcome, {{ current_user.first_name }} {{ current_user.last_name }}</h2>
+        <div class="user-account-details">
+            <p><strong>Hometown:</strong> {{ current_user.hometown }}</p>
+            <p><strong>Gender:</strong> {{ current_user.gender }}</p>
+            <p><strong>Date of Birth:</strong> {{ current_user.birth_date }}</p>
+        </div>
+    </div>
+    <div class="profile-main-content">
+
+        <section class="profile-section">
+            <h3>My Friends</h3>
+            <ul class="user-results">
+                {% for friend in friends %}
+                    <li class="user-result-item">
+                        <strong>{{ friend.first_name }} {{ friend.last_name }}</strong>
+                    </li>
+                {% else %}
+                    <li class="empty-list-msg">You haven't added any friends yet.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="profile-section">
+            <h3>Friend Recommendations</h3>
+            <p><small>People you may know based on common friends.</small></p>
+            <ul class="user-results">
+                {% for rec in recommendations %}
+                    <li class="user-result-item">
+                        <div class="item-details">
+                            <strong>{{ rec.first_name }} {{ rec.last_name }}</strong> 
+                            <span class="meta-info">({{ rec.common_friends_count }} common friends)</span>
+                        </div>
+                        <form action="/add_friend/{{ rec.user_id }}" method="POST" class="add-friend-form">
+                            <button type="submit" class="btn btn-success">Add Friend</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="empty-list-msg">No friend recommendations right now.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="profile-section">
+            <h3>My Albums</h3>
+            <a href="/create_album" class="btn btn-primary create-album-btn">Create New Album</a>
+            <ul class="user-results">
+                {% for album in albums %}
+                    <li class="user-result-item">
+                        <div class="item-details">
+                            <strong><a href="/album/{{ album.album_id }}">{{ album.album_name }}</a></strong> 
+                            <span class="meta-info">(Created: {{ album.creation_date }})</span>
+                        </div>
+                        <form action="/delete_album/{{ album.album_id }}" method="POST" class="delete-form">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="empty-list-msg">You don't have any albums yet.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="profile-section">
+            <h3>You May Also Like</h3>
+            <p><small>Photos recommended to you based on your most frequently used tags.</small></p>
+            
+            <div class="results-grid">
+                {% for photo in recommended_photos %}
+                    <div class="photo-results-card">
+                        <img src="data:image/jpeg;base64,{{ photo.data }}" alt="{{ photo.caption }}" class="result-image">
+                        
+                        <div class="photo-details">
+                            <p class="result-caption"><strong>By {{ photo.first_name }} {{ photo.last_name }}</strong>: {{ photo.caption }}</p>
+                            
+                            <p class="recommendation-reason">
+                                <em>Matches {{ photo.match_count }} of your top tags! (Total tags: {{ photo.total_tags }})</em>
+                            </p>
+
+                            {% if photo.tags_string %}
+                                <div class="photo-tags">
+                                    <strong>Tags:</strong>
+                                    {% for t in photo.tags_string.split(', ') %}
+                                        <a href="/search_tags?tags={{ t }}" class="tag-link">#{{ t }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="empty-list-msg">Upload more photos and add tags to get personalized recommendations!</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* Κεντράρισμα ολόκληρης της σελίδας upload */
+.auth-container {
+    background-color: var(--bg-card);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    width: 100%;
+    max-width: 550px;
+    margin: 60px auto;
+}
+
+.auth-container h2 {
+    font-size: 1.6rem;
+    color: var(--nav-bar);
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Δομή της φόρμας */
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Text Inputs και Select Box */
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background-color: #FFFFFF;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    border-color: var(--accent-orange);
+}
+
+/* Διαμόρφωση για το file input */
+.file-input {
+    padding: 10px;
+    background-color: #F8F7F2;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Το κουμπί υποβολής */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #3A3F58;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+
+.error-msg {
+    color: var(--btn-danger);
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+.create-album-prompt {
+    display: flex;
+    justify-content: center;
+}
+
+.create-album-prompt .btn {
+    display: inline-block;
+    background-color: var(--accent-terracotta);
+    color: #FFFFFF !important;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: opacity 0.2s ease;
+}
+
+.create-album-prompt .btn:hover {
+    opacity: 0.9;
+}

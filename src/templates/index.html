@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Home - k29photo{% endblock %}
+
+{% block content %}
+<div class="homepage-container">
+    
+    <aside class="left-slot">
+        <h3>Top Users</h3>
+        <p><small>Based on Photos + Comments</small></p>
+        <ol class="leaderboard">
+            {% for user in top_users %}
+                <li>
+                    <div class="user-info">
+                        <span class="name">{{ user.first_name }} {{ user.last_name }}</span>
+                        <span class="score">Score: <strong>{{ user.contribution_score }}</strong></span>
+                    </div>
+                </li>
+            {% else %}
+                <li>No active users yet.</li>
+            {% endfor %}
+        </ol>
+    </aside>
+
+    <main class="center-slot">
+        
+        {% if album_id %}
+            <div class="album-header-actions">
+                <span class="album-view-title">
+                    Viewing Album: <strong>{{ album_name }}</strong>
+                </span>
+                
+                {% if photos and current_user.is_authenticated and current_user.id == photos[0].owner_id %}
+                    <a href="/upload?album_id={{ album_id }}" class="btn btn-success add-photo-btn">
+                        Add Photo to this Album
+                    </a>
+                {% elif not photos and current_user.is_authenticated %}
+                    <a href="/upload?album_id={{ album_id }}" class="btn btn-success add-photo-btn">
+                        Upload First Photo
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% for photo in photos %}
+            <article class="photo-card">
+                
+                <div class="photo-content">
+                    <a href="/photo/{{ photo.photo_id }}">
+                        <img src="data:image/jpeg;base64,{{ photo.data }}" alt="{{ photo.caption }}" class="feed-image">
+                    </a>
+                </div>
+                
+                <div class="photo-body-wrapper">
+                    {% if photo.tags_string %}
+                        <div class="photo-tags">
+                            {% for t in photo.tags_string.split(', ') %}
+                                <a href="/search_tags?tags={{ t }}" class="tag-link">#{{ t }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="photo-meta-row">
+                        <div class="user-details">
+                            <strong class="author-name">{{ photo.first_name }} {{ photo.last_name }}</strong>
+                            <span class="album-label">in <a href="/album/{{ photo.album_id }}"><em>{{ photo.album_name }}</em></a></span>
+                        </div>
+                        <div class="meta-likes-display">
+                            <span class="heart-icon">❤️</span>
+                            <span class="like-count"><strong>{{ photo.like_count }}</strong></span>
+                        </div>
+                    </div>
+                    
+                    <p class="caption"><strong>{{ photo.first_name }}:</strong> {{ photo.caption }}</p>
+                    
+                    {% if photo.likers_string %}
+                        <p class="likers-list"><small>Liked by: {{ photo.likers_string }}</small></p>
+                    {% endif %}
+                    
+                    <div class="photo-actions-block">
+                        <div class="main-buttons-row">
+                            {% if current_user.is_authenticated %}
+                                <a href="/like/{{ photo.photo_id }}" class="btn like-btn">❤️ Like</a>
+                            {% endif %}
+                            <a href="/photo/{{ photo.photo_id }}" class="btn comment-btn">💬 Comment</a>
+                        </div>
+
+                        {% if current_user.is_authenticated and current_user.id == photo.owner_id %}
+                            <form action="/delete_photo/{{ photo.photo_id }}" method="POST" class="delete-photo-form">
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    {% if selected_photo_id == photo.photo_id %}
+                        <div class="photo-comments-box">
+                            <div class="comments-header">
+                                <h4>Comments</h4>
+                                <a href="/" class="close-comments-btn">Close</a>
+                            </div>
+
+                            <ul class="comment-list">
+                                {% for comment in comments %}
+                                    <li class="comment-item">
+                                        <strong>
+                                            {% if comment.guest_name %}
+                                                {{ comment.guest_name }} (Guest)
+                                            {% else %}
+                                                {{ comment.first_name }} {{ comment.last_name }}
+                                            {% endif %}
+                                        </strong>: 
+                                        {{ comment.comment_content }}
+                                        <span class="comment-date">{{ comment.comment_date }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="no-comments-yet">No comments yet.</li>
+                                {% endfor %}
+                            </ul>
+                            
+                            <form action="/add_comment/{{ photo.photo_id }}" method="POST" class="add-comment-form">
+                                {% if not current_user.is_authenticated %}
+                                    <input type="text" name="guest_name" placeholder="Your Name (Optional)" class="guest-input">
+                                {% endif %}
+                                <textarea name="comment_content" placeholder="Write a clean comment..." required class="comment-textarea"></textarea>
+                                <button type="submit" class="btn post-comment-btn">Post Comment</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                    
+                </div>
+            </article>
+        {% else %}
+            <div class="no-photos">
+                <p>The feed is empty. Be the first to share a moment!</p>
+            </div>
+        {% endfor %}
+    </main>
+    
+    <aside class="right-slot">
+        <h3>Popular Tags</h3>
+        <p><small>Trending now</small></p>
+        <ul class="tag-list">
+            {% for tag in popular_tags %}
+                <li>
+                    <a href="/search_tags?tags={{ tag.tag_name }}" class="popular-tag-link">#{{ tag.tag_name }}</a>
+                    <span class="tag-count">({{ tag.tag_count }})</span>
+                </li>
+            {% else %}
+                <li>No tags found yet.</li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+</div>
+{% endblock %}

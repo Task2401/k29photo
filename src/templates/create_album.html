@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Create Album - k29photo{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Create a New Album</h2>
+    <form action="/create_album" method="POST">
+        <div class="form-group">
+            <label for="album_name">Album Name</label>
+            <input type="text" id="album_name" name="album_name" placeholder="e.g. Summer 2026" required>
+        </div>
+        <button type="submit">Create Album</button>
+    </form>
+    <a href="/profile" class="back-link">Back to Profile</a>
+</div>
+{% endblock %}

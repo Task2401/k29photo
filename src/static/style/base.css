@@ -1,0 +1,123 @@
+:root {
+    --bg-main: #ECE6CD;
+    --bg-card: #FFFFFF;
+    --nav-bar: #3A3F58;
+    --accent-terracotta: #EE6A59;
+    --accent-orange: #F9AC67;
+
+    --text-main: #2C3F58;
+    --text-light:  #FFFFFF;
+    --btn-danger: #D9534F;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0;  
+    padding: 0;  
+}
+
+header {
+    background-color: var(--nav-bar);
+    padding: 15px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.logo a {
+    color: var(--text-light);
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #ECE6CD;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover{
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--text-light);
+}
+
+.nav-links span {
+    color: #ECE6CD;
+    font-size: 1rem;
+    font-style: italic;
+    margin-right: 5px; 
+}
+
+.flashes {
+    list-style: none;
+    max-width:  1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+.flash {
+    padding: 12px, 18px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.flash.success {
+    background-color: #D4EDDA ;
+    color: #155724 ;
+    border-left: 5px solid #28A745;
+}
+
+.flash.error {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border-left: 5px solid #DC3545;
+}
+
+.flash.info {
+    background-color: #D1ECF1;
+    color: #0C5460;
+    border-left: 5px solid #17A2B8;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 20px;
+    color: var(--text-main);
+    opacity: 0.7;
+    margin-top: 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}

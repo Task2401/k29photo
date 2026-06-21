@@ -1,0 +1,232 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.profile-page {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 40px;
+    max-width: 96%;
+    margin: 30px auto;
+    padding: 0 10px;
+    align-items: start;
+}
+
+.profile-header {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    position: sticky;
+    top: 90px;
+}
+
+.profile-header h2 {
+    font-size: 1.4rem;
+    color: var(--nav-bar);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.user-account-details p {
+    margin: 12px 0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    padding-bottom: 8px;
+}
+
+.user-account-details p:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.profile-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile-section {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.profile-section h3 {
+    font-size: 1.25rem;
+    color: var(--nav-bar);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.profile-section p {
+    margin-top: -10px;
+    margin-bottom: 15px;
+    color: var(--text-muted);
+}
+
+.create-album-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3A3F58;
+    color: #FFFFFF !important;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: auto;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.create-album-btn:hover {
+    background-color: var(--accent-terracotta);
+    opacity: 1;
+}
+
+.user-results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-result-item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-details strong a {
+    color: var(--accent-terracotta);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.item-details strong a:hover {
+    text-decoration: underline;
+}
+
+.meta-info {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.profile-section .btn-success {
+    background-color: var(--accent-orange);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.profile-section .btn-danger {
+    background-color: var(--btn-danger);
+    color: #FFFFFF;
+    border: none;
+    padding: 6px 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.empty-list-msg {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding: 10px 0;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.photo-results-card {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.result-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-details {
+    padding: 15px;
+}
+
+.result-caption {
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.recommendation-reason {
+    margin: 0 0 12px 0;
+    font-size: 0.8rem;
+    color: #27AE60;
+}
+
+.photo-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.photo-tags .tag-link {
+    background-color: rgba(230, 126, 34, 0.1);
+    color: var(--accent-orange) !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .profile-page {
+        grid-template-columns: 1fr;
+    }
+    .profile-header {
+        position: static;
+    }
+}

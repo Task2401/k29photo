@@ -1,0 +1,13 @@
+.auth-container .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--accent-orange);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.auth-container .back-link:hover {
+    text-decoration: underline;
+}
