@@ -119,7 +119,7 @@ Planned improvements for upcoming releases:
 
 ## Author 
 
-**Anastasios - Christos Kyrios** *Software Engineer*
+**Anastasis - Christos Kyrios (Task2401)** _Software Engineer / Computer Science Student_
 
 
 
