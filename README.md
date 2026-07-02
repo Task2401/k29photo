@@ -72,7 +72,7 @@ python src/sql/inserts.py
 
 Open the files src/app.py and src/sql/inserts.py to insert your database credentials (DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT) in the connection configuration section located at the top of each script.
 
-### Virtual Environment Setup
+## Virtual Environment Setup
 
 For Bash (Linux/macOS):
 
