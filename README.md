@@ -121,5 +121,8 @@ Planned improvements for upcoming releases:
 
 **Anastasis - Christos Kyrios (Task2401)** _Software Engineer / Computer Science Student_
 
+---
+
+_This project was developed as an academic showcase of Full-Stack Web Development and Relational Database Engineering capabilities._
 
 
