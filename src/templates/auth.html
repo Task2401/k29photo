@@ -1,11 +1,20 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html"%}
+
+{# Dynamically set the browser tab title based on the current authentication mode #}
 
 {% block title%}
     {% if mode == 'login' %}Login{% else %}Register{% endif %} - k29photo
 {% endblock %}
 
+{# Inject the main authentication form content into the base layout #}
+
 {% block content %}
 <div class="auth-container">
+
+    # Render the User Login form block if the mode is set to login #}
+
     {% if mode == 'login' %}
         <h2>User Login</h2>
         <form action="/login" method="post">
@@ -20,6 +29,8 @@
             <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="/register">Register here</a></p>
+
+    {# Render the Create New Account registration form block if the mode is set to register #}
 
     {% else %}
         <h2>Create New Account</h2>

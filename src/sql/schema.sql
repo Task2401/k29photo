@@ -1,3 +1,5 @@
+-- Core table storing registered user accounts and profile information
+
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
@@ -10,6 +12,8 @@ CREATE TABLE Users (
     CONSTRAINT check_birth_date CHECK ( birth_date <= CURRENT_DATE )
 );
 
+-- Table mapping bidirectional social friendship bindings between profiles
+
 CREATE TABLE Friends (
   user_id1 INT NOT NULL,
   user_id2 INT NOT NULL,  
@@ -18,6 +22,8 @@ CREATE TABLE Friends (
   FOREIGN KEY (user_id2) REFERENCES Users(user_id) ON DELETE CASCADE,
   CONSTRAINT user_cannot_friend_himself CHECK (user_id1 <> user_id2 )
 );
+
+-- Table storing photo collection groups spawned by platform members
 
 CREATE TABLE Albums (
     album_id SERIAL PRIMARY KEY,
@@ -28,6 +34,8 @@ CREATE TABLE Albums (
     CONSTRAINT check_creation_date CHECK (creation_date <= CURRENT_DATE)
 );
 
+-- Table storing uploaded photograph items with direct binary BYTEA payload storage
+
 CREATE TABLE Photos (
     photo_id SERIAL PRIMARY KEY,
     album_id INT NOT NULL,
@@ -36,11 +44,15 @@ CREATE TABLE Photos (
     FOREIGN KEY (album_id) REFERENCES Albums(album_id) ON DELETE CASCADE
 );
 
+-- Table defining system-wide unique categorization tag string labels
+
 CREATE TABLE Tags (
     tag_id SERIAL PRIMARY KEY,
     tag_name VARCHAR(120) UNIQUE NOT NULL,
     CONSTRAINT no_spaces_on_tags CHECK (tag_name NOT LIKE '% %')
 );
+
+-- Relationship table mapping tag labels to uploaded photograph assets
 
 CREATE TABLE Photo_Has_Tags (
     photo_id INT NOT NULL,
@@ -49,6 +61,8 @@ CREATE TABLE Photo_Has_Tags (
     FOREIGN KEY (photo_id) REFERENCES Photos(photo_id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES Tags(tag_id) ON DELETE CASCADE
 );
+
+-- Table registering commentary logs submitted by profile members or external guests
 
 CREATE TABLE Comments (
     comment_id SERIAL PRIMARY KEY,
@@ -66,6 +80,8 @@ CREATE TABLE Comments (
     ) 
 );
 
+-- Table registering distinct social like attributes bound to shared photographs
+
 CREATE TABLE Likes (
     user_id INT NOT NULL,
     photo_id INT NOT NULL,
@@ -73,6 +89,8 @@ CREATE TABLE Likes (
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (photo_id) REFERENCES Photos(photo_id) on DELETE CASCADE
 );
+
+-- PL/pgSQL function checking ownership constraints to block self-comments
 
 CREATE OR REPLACE FUNCTION check_self_comment_func()
 RETURNS TRIGGER AS $$
@@ -92,10 +110,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Database trigger enforcing comment verification logic before insertion
+
 CREATE TRIGGER check_self_comment_trigger
 BEFORE INSERT ON Comments
 FOR EACH ROW
 EXECUTE FUNCTION check_self_comment_func();
+
+-- PL/pgSQL function checking ownership constraints to block self-likes
 
 CREATE OR REPLACE FUNCTION check_self_like_func()
 RETURNS TRIGGER AS $$
@@ -112,6 +134,8 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Database trigger enforcing like verification logic before insertion
 
 CREATE TRIGGER check_self_like_trigger
 BEFORE INSERT ON Likes

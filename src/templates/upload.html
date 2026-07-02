@@ -1,11 +1,24 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html" %}
+
+{# Set the browser tab title for the photo upload page #}
+
 {% block title %}Upload Photo - k29photo{% endblock %}
+
+{# Inject the multi-file photo upload form content into the base layout #}
 
 {% block content %}
 <div class="auth-container">
     <h2>Upload a Photo</h2>
+
+    {# Section 1: Check if the user has created any albums before rendering the upload form #}
+
     {% if albums %}
         <form action="/upload" method="POST" enctype="multipart/form-data">
+
+            {# Field block routing file uploads to a specific selected user album asset #}
+
             <div class="form-group">
                 <label for="album_id">Select Album</label>
                 <select name="album_id" id="album_id" required>
@@ -18,15 +31,21 @@
                 </select>
             </div>
             
+            {# Field block restricting multi-file selection to valid photograph image formats #}
+
             <div class="form-group">
                 <label for="photo">Choose Photo(s)</label>
                 <input type="file" id="photo" name="photos" accept="image/jpeg, image/png, image/gif" multiple required class="file-input">
             </div>
             
+            {# Optional text description input bound to the targeted uploaded media batch #}
+
             <div class="form-group">
                 <label for="caption">Caption (Optional)</label>
                 <input type="text" id="caption" name="caption" placeholder="Write something about this photo...">
             </div>
+            
+            {# Text input field processing space-separated keyword labels for the pictures #}
             
             <div class="form-group">
                 <label for="tags">Tags (separated by space)</label>
@@ -35,6 +54,9 @@
             
             <button type="submit" class="btn-primary">Upload</button>
         </form>
+
+    {# Fallback warning block triggered when zero albums exist in the user account #}
+
     {% else %}
         <p class="error-msg">You need to create an album first before uploading photos!</p>
         <div class="create-album-prompt">

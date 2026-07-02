@@ -1,9 +1,19 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html" %}
+
+# Set the browser tab title for the album creation page #}
+
 {% block title %}Create Album - k29photo{% endblock %}
+
+{# Inject the album creation form content into the base layout #}
 
 {% block content %}
 <div class="auth-container">
     <h2>Create a New Album</h2>
+
+    {# Form submitting a POST request to generate a new album asset #}
+
     <form action="/create_album" method="POST">
         <div class="form-group">
             <label for="album_name">Album Name</label>
@@ -11,6 +21,9 @@
         </div>
         <button type="submit">Create Album</button>
     </form>
+
+    {# Navigation link to redirect back to the user profile dashboard #}
+
     <a href="/profile" class="back-link">Back to Profile</a>
 </div>
 {% endblock %}

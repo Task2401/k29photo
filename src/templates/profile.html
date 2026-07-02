@@ -1,8 +1,18 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html" %}
+
+# Set the browser tab title for the user profile dashboard #}
+
 {% block title %}Profile - k29photo{% endblock %}
+
+{# Inject the profile layout and configuration sections into the base layout #}
 
 {% block content %}
 <div class="profile-page">
+
+    {# Left column panel: Displays core authenticated user account details #}
+
     <div class="profile-header">
         <h2>Welcome, {{ current_user.first_name }} {{ current_user.last_name }}</h2>
         <div class="user-account-details">
@@ -11,7 +21,12 @@
             <p><strong>Date of Birth:</strong> {{ current_user.birth_date }}</p>
         </div>
     </div>
+
+    {# Right column panel: Main content scroll containing social and media listing sections #}
+
     <div class="profile-main-content">
+
+        {# Section 1: Renders the active profile friends index list #}
 
         <section class="profile-section">
             <h3>My Friends</h3>
@@ -25,6 +40,8 @@
                 {% endfor %}
             </ul>
         </section>
+
+        {# Section 2: Displays social graph friend recommendations based on mutual connections #}
 
         <section class="profile-section">
             <h3>Friend Recommendations</h3>
@@ -46,6 +63,8 @@
             </ul>
         </section>
 
+        {# Section 3: Displays managed albums owned by the authenticated profile member #}
+
         <section class="profile-section">
             <h3>My Albums</h3>
             <a href="/create_album" class="btn btn-primary create-album-btn">Create New Album</a>
@@ -65,6 +84,8 @@
                 {% endfor %}
             </ul>
         </section>
+
+        {# Section 4: Presents discovery photo recommendations using analytical tag usage data #}
 
         <section class="profile-section">
             <h3>You May Also Like</h3>

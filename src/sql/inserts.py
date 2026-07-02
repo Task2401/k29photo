@@ -6,6 +6,8 @@ DB_NAME = "Your_DB_Name"
 DB_USER = "Your_User_Name" 
 DB_PASS = "Your_PW"
 
+# Establishes and returns a connection connection to the PostgreSQL database
+
 def get_db_connection():
     return psycopg2.connect(
         host=DB_HOST,
@@ -14,11 +16,16 @@ def get_db_connection():
         password=DB_PASS
     )
 
+# Executes database insertion tasks to populate the schema tables with mock dataset records
+
 def run_inserts():
     conn = get_db_connection()
     cur = conn.cursor(cursor_factory=DictCursor)
     
     try:
+
+        # Insert initial user records into the Users table and reset the primary key sequence counter
+        
         cur.execute("""
             INSERT INTO Users (user_id, first_name, last_name, email, birth_date, hometown, gender, password) VALUES
             (1, 'John', 'Smith', 'john.smith@example.com', '1995-05-12', 'New York', 'male', 'pbkdf2:sha256:260000$examplehash123'),
@@ -29,11 +36,15 @@ def run_inserts():
         """)
         cur.execute("SELECT setval('users_user_id_seq', (SELECT MAX(user_id) FROM Users));")
 
+        # Insert relationship rows into the Friends table mapping user social bindings
+
         cur.execute("""
             INSERT INTO Friends (user_id1, user_id2) VALUES
             (1, 2), (1, 3), (2, 4), (3, 4)
             ON CONFLICT DO NOTHING;
         """)
+
+        # Insert data records into the Albums table and update its sequence counter
 
         cur.execute("""
             INSERT INTO Albums (album_id, album_name, owner_id, creation_date) VALUES
@@ -44,13 +55,16 @@ def run_inserts():
         """)
         cur.execute("SELECT setval('albums_album_id_seq', (SELECT MAX(album_id) FROM Albums));")
 
-        # Καθαρά μονοπάτια χωρίς τελείες για να δουλεύει όταν το τρέχεις μέσα από το src
+        # Define specific image properties mapping file paths to their respective targets
+
         images = [
             (1, 1, 'A breathtaking desert storm passing over the majestic monolithic peak at sunset.', 'src/static/img/photo1.png'),
             (2, 1, 'Golden sunbeams piercing through the valley over a wild rocky riverbed.', 'src/static/img/photo2.png'),
             (3, 2, 'Perfect symmetry. Crystal clear river reflecting the snow-capped mountain peaks.', 'src/static/img/photo3.png'),
             (4, 2, 'A solitary pine tree standing proud on a frost-covered hill above the sea of clouds.', 'src/static/img/photo4.png')
         ]
+
+        # Iterate through the image matrix to read file bytes and stream binary payloads into the database
 
         for photo_id, album_id, caption, img_path in images:
             try:
@@ -68,9 +82,13 @@ def run_inserts():
 
         cur.execute("SELECT setval('photos_photo_id_seq', (SELECT MAX(photo_id) FROM Photos));")
 
+        # Seed global unique tag metadata identifiers into the Tags table
+
         tags = ['desert', 'storm', 'epic', 'sunset', 'river', 'sunrays', 'mountains', 'reflection', 'winter', 'frost', 'clouds', 'nature']
         for tag in tags:
             cur.execute("INSERT INTO Tags (tag_name) VALUES (%s) ON CONFLICT (tag_name) DO NOTHING;", (tag,))
+
+        # Map photo entries to their corresponding tags in the Photo_Has_Tags table
 
         photo_tags = [
             (1, 'desert'), (1, 'storm'), (1, 'epic'), (1, 'sunset'),
@@ -87,6 +105,8 @@ def run_inserts():
                     VALUES (%s, %s) ON CONFLICT DO NOTHING;
                 """, (photo_id, tag_row['tag_id']))
 
+        # Populate the Comments table with mock historical commentary text rows
+
         cur.execute("""
             INSERT INTO Comments (comment_content, comment_owner, guest_name, photo_id, comment_date) VALUES
             ('Wow, the lighting in this storm is absolutely unreal!', 2, NULL, 1, '2026-05-11'),
@@ -98,6 +118,8 @@ def run_inserts():
             ('Brrr, feels freezing just looking at it. Beautiful minimalism.', 3, NULL, 4, '2026-05-20')
             ON CONFLICT DO NOTHING;
         """)
+
+        # Populate the Likes table with initial photograph user like relations
 
         cur.execute("""
             INSERT INTO Likes (user_id, photo_id) VALUES
@@ -117,6 +139,8 @@ def run_inserts():
     finally:
         cur.close()
         conn.close()
+
+# Main file execution script entry check point loop trigger
 
 if __name__ == "__main__":
     run_inserts()

@@ -3,15 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {# Dynamic placeholder for the page title #}
+    
     <title>{% block title %}k29photo{% endblock %}</title>
+    
+    {# Link to the main centralized application stylesheet #}
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
 </head>
 <body>
+
+    {# Global header section containing the main navigation links #}
+
     <header>
         <nav>
+
+            {# Main website brand logo redirecting to home #}
+
             <div class="logo">
                 <a href="/">k29photo</a>
             </div>
+
+            {# Conditional navigation menu based on user authentication status #}
 
             <div class="nav-links">
                 {% if current_user.is_authenticated %}
@@ -27,7 +41,13 @@
             </div>
         </nav>
     </header>
+
+    {# Main view section rendering flash notifications and dynamic block templates #}
+
     <main>
+
+        {# System-wide messaging block for displaying success, info, or error alerts #}
+
         <section class="messages">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -39,11 +59,16 @@
                 {% endif %}
             {% endwith %}
         </section>
+
+        {# Main container for specific template view content injection #}
+
         <div class="content">
             {% block content %}
             {% endblock %}
         </div>
     </main>
+
+    {# Global application footer template block #}
 
     <footer>
         <p>k29photo Project 2026 - Τμήμα Περιττών</p>

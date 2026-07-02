@@ -1,9 +1,18 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html" %}
+
+{# Set the browser tab title for the home page view #}
+
 {% block title %}Home - k29photo{% endblock %}
+
+{# Inject the centralized feed and sidebar slots content into the base layout #}
 
 {% block content %}
 <div class="homepage-container">
     
+    {# Left sidebar slot: Leaderboard rendering the top active community users #}
+
     <aside class="left-slot">
         <h3>Top Users</h3>
         <p><small>Based on Photos + Comments</small></p>
@@ -21,14 +30,20 @@
         </ol>
     </aside>
 
+    {# Center main content slot: Dynamic feed iteration displaying shared photographs #}
+
     <main class="center-slot">
         
+        {# Optional header message element rendered when filtering by a specific album #}
+
         {% if album_id %}
             <div class="album-header-actions">
                 <span class="album-view-title">
                     Viewing Album: <strong>{{ album_name }}</strong>
                 </span>
                 
+                {# Conditional buttons allowing authorized folder creators to upload images #}
+
                 {% if photos and current_user.is_authenticated and current_user.id == photos[0].owner_id %}
                     <a href="/upload?album_id={{ album_id }}" class="btn btn-success add-photo-btn">
                         Add Photo to this Album
@@ -41,16 +56,25 @@
             </div>
         {% endif %}
 
+        {# Primary loop rendering individual photograph article card elements #}
+
         {% for photo in photos %}
             <article class="photo-card">
                 
+                # Picture layout wrapper containing base64 data encoding streams #}
+
                 <div class="photo-content">
                     <a href="/photo/{{ photo.photo_id }}">
                         <img src="data:image/jpeg;base64,{{ photo.data }}" alt="{{ photo.caption }}" class="feed-image">
                     </a>
                 </div>
                 
+                {# Interactive metadata container block for descriptions, links, and tags #}
+
                 <div class="photo-body-wrapper">
+
+                    {# Conditional tag element listing mapped keywords for the image #}
+
                     {% if photo.tags_string %}
                         <div class="photo-tags">
                             {% for t in photo.tags_string.split(', ') %}
@@ -59,6 +83,8 @@
                         </div>
                     {% endif %}
                     
+                    {# Author relationship and accumulated count rows #}
+
                     <div class="photo-meta-row">
                         <div class="user-details">
                             <strong class="author-name">{{ photo.first_name }} {{ photo.last_name }}</strong>
@@ -72,10 +98,14 @@
                     
                     <p class="caption"><strong>{{ photo.first_name }}:</strong> {{ photo.caption }}</p>
                     
+                    {# Aggregate listing text block displaying user names who liked the media #}
+
                     {% if photo.likers_string %}
                         <p class="likers-list"><small>Liked by: {{ photo.likers_string }}</small></p>
                     {% endif %}
                     
+                    {# Profile engagement action controls for adding comments or likes #}
+
                     <div class="photo-actions-block">
                         <div class="main-buttons-row">
                             {% if current_user.is_authenticated %}
@@ -84,6 +114,8 @@
                             <a href="/photo/{{ photo.photo_id }}" class="btn comment-btn">💬 Comment</a>
                         </div>
 
+                        {# Privileged photo removal block visible only to verified media creators #}
+
                         {% if current_user.is_authenticated and current_user.id == photo.owner_id %}
                             <form action="/delete_photo/{{ photo.photo_id }}" method="POST" class="delete-photo-form">
                                 <button type="submit" class="btn delete-btn">Delete</button>
@@ -91,12 +123,16 @@
                         {% endif %}
                     </div>
                     
+                    {# Commentary component container rendered dynamically for selected photo queries #}
+
                     {% if selected_photo_id == photo.photo_id %}
                         <div class="photo-comments-box">
                             <div class="comments-header">
                                 <h4>Comments</h4>
                                 <a href="/" class="close-comments-btn">Close</a>
                             </div>
+
+                            {# Dynamic loop iterating across historical comment list entries #}
 
                             <ul class="comment-list">
                                 {% for comment in comments %}
@@ -116,6 +152,8 @@
                                 {% endfor %}
                             </ul>
                             
+                            {# Interactive text form mapping text commentary to targeted photo resources #}
+
                             <form action="/add_comment/{{ photo.photo_id }}" method="POST" class="add-comment-form">
                                 {% if not current_user.is_authenticated %}
                                     <input type="text" name="guest_name" placeholder="Your Name (Optional)" class="guest-input">
@@ -129,12 +167,17 @@
                 </div>
             </article>
         {% else %}
+
+            {# Empty fallback view layout presented when no items pass filtration scopes #}
+
             <div class="no-photos">
                 <p>The feed is empty. Be the first to share a moment!</p>
             </div>
         {% endfor %}
     </main>
     
+    {# Right sidebar slot: Popular tag index navigation panel listing trending entries #}
+
     <aside class="right-slot">
         <h3>Popular Tags</h3>
         <p><small>Trending now</small></p>

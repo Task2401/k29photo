@@ -1,11 +1,20 @@
+{# Extend the global base layout template #}
+
 {% extends "base.html" %}
+
+{# Set the browser tab title for the search results page #}
+
 {% block title %}Search - k29photo{% endblock %}
+
+{# Inject the search navigation forms and conditional result views into the base layout #}
 
 {% block content %}
 <div class="search-page">
     <div class="search-box">
         <h2>Explore k29photo</h2>
         
+        {# Section 1: User discovery submission form visible only to authenticated profiles #}
+
         {% if current_user.is_authenticated %}
             <section class="search-form-container">
                 <h3>Find Users</h3>
@@ -16,12 +25,16 @@
             </section>
         {% endif %}
 
+        {# Section 2: Tag-based image filtering form equipped with optional ownership scope filters #}
+
         <section class="search-form-container">
             <h3>Filter Photos by Tags</h3>
             <p><small>Enter tags separated by space (e.g. Athens Summer)</small></p>
             <form action="/search_tags" method="GET" class="search-form">
                 <input type="text" name="tags" placeholder="e.g. nature sunset" required class="search-input">
                 
+                {# Conditional toggle allowing authenticated members to limit tag queries to their own library #}
+
                 {% if current_user.is_authenticated %}
                 <div class="search-scope-toggle">
                     <div class="scope-switch">
@@ -41,6 +54,8 @@
             </form>
         </section>
 
+        {# Section 3: Text matching form to look up community commentary records #}
+
         <section class="search-form-container">
             <h3>Search in Comments</h3>
             <p><small>Find users based on the exact text of their comments.</small></p>
@@ -54,6 +69,8 @@
     
     <div class="search-results">
         
+        {# Output block rendering matched member name profiles and friend invitation triggers #}
+
         {% if current_user.is_authenticated and users %}
             <h3>Users Found:</h3>
             <ul class="user-results">
@@ -67,6 +84,8 @@
                 {% endfor %}
             </ul>
         {% endif %}
+
+        {# Output block iterating across base64 photography cards matched by active tags #}
 
         {% if photos %}
             <h3>Photo Results:</h3>
@@ -88,9 +107,14 @@
                     </div>
                 {% endfor %}
             </div>
+
+        {# Fallback element rendered when tag searches yield zero matching records #}
+
         {% elif searched %}
             <p class="no-results error-msg">No results found for your tags search.</p>
         {% endif %}
+
+        {# Output block displaying user metrics tracking matches against specific text strings #}
 
         {% if comment_users %}
             <h3>Users who commented "{{ comment_query }}":</h3>
@@ -104,6 +128,9 @@
                     </li>
                 {% endfor %}
             </ul>
+
+        {# Fallback element rendered when commentary text searches return no occurrences #}
+
         {% elif comment_searched %}
             <p class="no-results error-msg">No users found matching this comment text.</p>
         {% endif %}
